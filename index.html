@@ -8,7 +8,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
     <style>
-        /* Existing CSS Styles */
         :root {
             --primary-color: #6a3d11;
             --secondary-color: #d8c29d;
@@ -39,7 +38,6 @@
             min-height: 100vh;
         }
 
-        /* Container and Header */
         .container {
             flex-grow: 1;
             padding: 20px;
@@ -66,7 +64,6 @@
             gap: 10px;
         }
 
-        /* Loader */
         .loader {
             position: fixed;
             top: 0;
@@ -98,7 +95,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Popup Message */
         #popup-message-container {
             position: fixed;
             top: 20px;
@@ -118,7 +114,6 @@
             opacity: 1;
         }
 
-        /* Buttons and Forms */
         .btn {
             padding: 10px 15px;
             border: none;
@@ -164,7 +159,6 @@
             background-color: #1e87e5;
         }
 
-        /* Filter Section */
         .filter-section {
             display: flex;
             gap: 20px;
@@ -181,7 +175,6 @@
             border-radius: 5px;
         }
 
-        /* Table/Card Styles - NEW CARD LAYOUT */
         .card-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -247,7 +240,6 @@
             color: var(--success-color);
         }
 
-        /* Status Colors */
         .status[data-status="Pending"],
         .status[data-status="Send"] {
             background-color: #ffe0b2;
@@ -264,9 +256,8 @@
             color: var(--danger-color);
         }
 
-        /* Modals */
         .modal {
-            display: none; /* Hidden by default */
+            display: none;
             position: fixed;
             z-index: 100;
             left: 0;
@@ -274,7 +265,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+            background-color: rgba(0,0,0,0.5);
             align-items: center;
             justify-content: center;
         }
@@ -289,7 +280,6 @@
             position: relative;
         }
 
-        /* ... (rest of modal content styling) ... */
         .modal-content h3 {
             margin-bottom: 15px;
             color: var(--primary-color);
@@ -305,7 +295,7 @@
 
         .modal-content input[type="text"],
         .modal-content input[type="number"],
-        .modal-content input[type="date"], /* Added input[type="date"] */
+        .modal-content input[type="date"],
         .modal-content select {
             width: 100%;
             padding: 10px;
@@ -337,14 +327,11 @@
             gap: 10px;
         }
 
-
-        /* Login Modal Specific */
         #login-modal .modal-content {
             max-width: 400px;
-            text-align: left; /* Changed to left align for form labels */
+            text-align: left;
         }
 
-        /* New Order Modal Specific */
         .new-order-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -353,12 +340,11 @@
         }
 
         .menu-selection {
-    user-select: none;   /* Prevents text selection */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         .order-summary {
             background: var(--secondary-color);
@@ -403,7 +389,7 @@
             border-radius: 50%;
             width: 20px;
             height: 20px;
-            display: none; /* Hidden by default */
+            display: none;
             align-items: center;
             justify-content: center;
             font-size: 12px;
@@ -475,11 +461,7 @@
             display: flex;
             justify-content: space-between;
         }
-        /* ... (rest of invoice modal styles) ... */
 
-        /* --- NEW STYLES FOR ATTENDANCE --- */
-
-        /* QR Scanner Modal Specific */
         #qr-scanner-modal .modal-content {
             max-width: 400px;
             text-align: center;
@@ -499,7 +481,6 @@
             border-radius: var(--border-radius);
         }
 
-        /* Attendance History Modal Specific */
         #attendance-history-modal .modal-content {
             max-width: 900px;
         }
@@ -527,148 +508,70 @@
             background-color: #f9f9f9;
         }
 
-        /* --- END NEW STYLES --- */
-
-
-        /* Responsive Design */
-@media (max-width: 768px) {
-    #new-order-modal .modal-content {
-        max-width: 95%;
-        margin: 10px auto;
-        height: 95vh;
-        overflow-y: auto;
-    }
-
-    /* Stack inputs and sections vertically in clean order */
-    #new-order-form > div:first-child {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    #new-order-form label {
-        font-weight: 600;
-        margin-top: 5px;
-    }
-
-    .new-order-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-
-@media (max-width: 768px) {
-    #new-order-menu-items {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* two columns */
-        gap: 10px;
-    }
-
-    .product-card {
-        padding: 10px;
-        margin: 0;
-        font-size: 14px;
-    }
-
-    .product-card h4 {
-        font-size: 14px;
-    }
-
-    .product-card p {
-        font-size: 13px;
-    }
-
-    .product-quantity-badge {
-        width: 18px;
-        height: 18px;
-        font-size: 11px;
-    }
-}
-
-
-    /* Order: Menu Items first, then inputs, then Current Order */
-    .menu-selection { order: 1; }
-    #emp-id { order: 2; }
-    #table-no { order: 3; }
-    #customer-name { order: 4; }
-    .order-summary { order: 5; }
-
-    .new-order-total {
-        display: block;
-    }
-
-    .mobile-total-sticky {
-        display: none;
-    }
-
-    #new-order-modal .modal-content {
-        max-width: 95%;
-        margin: 10px auto;
-        height: 95vh;
-        overflow-y: auto;
-    }
-
-    .new-order-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .order-summary {
-        order: -1; /* keep summary on top */
-    }
-
-    .new-order-total {
-        display: block; /* ensure total shows inside summary */
-    }
-
-    .mobile-total-sticky {
-        display: none; /* hide duplicate sticky total */
-    }
-}
-
         @media (max-width: 768px) {
+            #new-order-modal .modal-content {
+                max-width: 95%;
+                margin: 10px auto;
+                height: 95vh;
+                overflow-y: auto;
+            }
 
+            #new-order-form > div:first-child {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
 
+            #new-order-form label {
+                font-weight: 600;
+                margin-top: 5px;
+            }
 
-    #new-order-modal .modal-content {
-        max-width: 95%;
-        margin: 10px auto;
-        height: 95vh;
-        overflow-y: auto;
-    }
+            .new-order-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
 
-    /* Stack inputs and sections vertically in clean order */
-    #new-order-form > div:first-child {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
+            #new-order-menu-items {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
 
-    #new-order-form label {
-        font-weight: 600;
-        margin-top: 5px;
-    }
+            .product-card {
+                padding: 10px;
+                margin: 0;
+                font-size: 14px;
+            }
 
-    .new-order-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
+            .product-card h4 {
+                font-size: 14px;
+            }
 
-    /* Order: Menu Items first, then inputs, then Current Order */
-    .menu-selection { order: 1; }
-    #emp-id { order: 2; }
-    #table-no { order: 3; }
-    #customer-name { order: 4; }
-    .order-summary { order: 5; }
+            .product-card p {
+                font-size: 13px;
+            }
 
-    .new-order-total {
-        display: block;
-    }
+            .product-quantity-badge {
+                width: 18px;
+                height: 18px;
+                font-size: 11px;
+            }
 
-    .mobile-total-sticky {
-        display: none;
-    }
+            .menu-selection { order: 1; }
+            #emp-id { order: 2; }
+            #table-no { order: 3; }
+            #customer-name { order: 4; }
+            .order-summary { order: 5; }
+
+            .new-order-total {
+                display: block;
+            }
+
+            .mobile-total-sticky {
+                display: none;
+            }
 
             .filter-section {
                 flex-direction: column;
@@ -695,11 +598,11 @@
             }
 
             .order-summary {
-                order: -1; /* Move order summary to top on mobile */
+                order: -1;
             }
 
             .new-order-total {
-                display: none; /* Hide total in side summary */
+                display: none;
             }
 
             .mobile-total-sticky {
@@ -722,6 +625,7 @@
             }
         }
     </style>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
     <div id="loader" class="loader">
@@ -734,7 +638,9 @@
         <div class="header">
             <h1>Employee POS Dashboard</h1>
             <div class="actions">
-                <button id="viewAttendanceBtn" class="btn btn-info" style="display: none;">📊 Attendance</button> <button id="scanQrBtn" class="btn btn-primary" style="display: none;">📷 Scan QR</button> <button id="newOrderBtn" class="btn btn-primary">➕ New Order</button>
+                <button id="viewAttendanceBtn" class="btn btn-info" style="display: none;">📊 Attendance</button>
+                <button id="scanQrBtn" class="btn btn-primary" style="display: none;">📷 Scan QR</button>
+                <button id="newOrderBtn" class="btn btn-primary">➕ New Order</button>
                 <button id="logoutBtn" class="btn btn-danger" style="display: none;">🚪 Logout</button>
             </div>
         </div>
@@ -745,12 +651,10 @@
         </div>
 
         <div id="orders-card-container" class="card-container">
-            </div>
-        
+        </div>
     </div>
 
     <div class="modals-container">
-        
         <div id="login-modal" class="modal" style="display: none;">
             <div class="modal-content" style="max-width: 400px;">
                 <h3>Employee Login</h3>
@@ -767,6 +671,7 @@
                 </form>
             </div>
         </div>
+
         <div id="new-order-modal" class="modal">
             <div class="modal-content" style="max-width: 1000px;">
                 <span class="close-btn">&times;</span>
@@ -775,7 +680,8 @@
                     <div style="display: flex; gap: 15px; margin-bottom: 15px;">
                         <div style="flex-grow: 1;">
                             <label for="emp-id">Employee ID</label>
-                            <input type="text" id="emp-id" required readonly> </div>
+                            <input type="text" id="emp-id" required readonly>
+                        </div>
                         <div style="flex-grow: 1;">
                             <label for="table-no">Table No</label>
                             <input type="text" id="table-no" placeholder="Table Number" required>
@@ -789,14 +695,12 @@
                     <div class="new-order-grid">
                         <div class="menu-selection">
                             <h4>Menu Items</h4>
-                            <div id="new-order-menu-items">
-                                </div>
+                            <div id="new-order-menu-items"></div>
                         </div>
                         
                         <div class="order-summary">
                             <h4>Current Order</h4>
-                            <div id="current-order-list" class="current-order-list">
-                                </div>
+                            <div id="current-order-list" class="current-order-list"></div>
                             <div class="new-order-total-container">
                                 <div class="new-order-total">
                                     <span>Total:</span>
@@ -899,52 +803,37 @@
                             <th>Total Hours</th>
                         </tr>
                     </thead>
-                    <tbody id="attendance-history-body">
-                        </tbody>
+                    <tbody id="attendance-history-body"></tbody>
                 </table>
             </div>
         </div>
-
     </div>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const popupMessageContainer = document.getElementById('popup-message-container');
             const loader = document.getElementById('loader');
 
-            // NEW Login Modal Elements
             const loginModal = document.getElementById('login-modal');
             const loginForm = document.getElementById('login-form');
             const loginEmpIdInput = document.getElementById('login-emp-id');
             const loginDobInput = document.getElementById('login-dob'); 
 
-            // Header Action Buttons
             const newOrderBtn = document.getElementById('newOrderBtn');
             const logoutBtn = document.getElementById('logoutBtn');
-            const scanQrBtn = document.getElementById('scanQrBtn'); // NEW
-            const viewAttendanceBtn = document.getElementById('viewAttendanceBtn'); // NEW
+            const scanQrBtn = document.getElementById('scanQrBtn');
+            const viewAttendanceBtn = document.getElementById('viewAttendanceBtn');
             
-            // NEW Attendance Modals
             const qrScannerModal = document.getElementById('qr-scanner-modal');
             const simulateScanBtn = document.getElementById('simulate-scan-btn');
             const attendanceHistoryModal = document.getElementById('attendance-history-modal');
             const attendanceHistoryBody = document.getElementById('attendance-history-body');
             const attendanceEmpIdSpan = document.getElementById('attendance-emp-id-span');
 
-            // Orders List Container (Card View)
             const ordersCardContainer = document.getElementById('orders-card-container');
+            const newOrderModal = document.getElementById('new-order-modal');
+            const empIdInput = document.getElementById('emp-id'); 
 
-
-            // ... (Existing modal element declarations)
-            const invoiceModal = document.getElementById('invoice-modal');
-            const splitPaymentSection = document.getElementById('split-payment-section');
-            const cashSplitAmountInput = document.getElementById('cash-split-amount');
-            const onlineSplitAmountInput = document.getElementById('online-split-amount');
-            const splitRemainingSpan = document.getElementById('split-remaining');
-            const finalisePaymentBtn = document.getElementById('finalise-payment-btn');
-
-            // Filter elements (Existing)
             const searchInput = document.getElementById('search-input');
             const dateInput = document.getElementById('date-input');
 
@@ -972,13 +861,9 @@
             let products = [];
             let orders = [];
             let employees = []; 
-            let attendanceRecords = []; // NEW
+            let attendanceRecords = [];
             let currentOrder = [];
             let currentOrderId = null;
-
-            const ordersTableBody = document.querySelector('#orders-table-body'); 
-            const newOrderModal = document.getElementById('new-order-modal');
-            const empIdInput = document.getElementById('emp-id'); 
 
             const showPopupMessage = (message) => {
                 popupMessageContainer.textContent = message;
@@ -988,20 +873,16 @@
                 }, 3000);
             };
 
-            // ------------------------------------
-            // Login/Authentication Functions
-            // ------------------------------------
             const updateUIForLoginStatus = (isLoggedIn) => {
                 newOrderBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
                 logoutBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
-                scanQrBtn.style.display = isLoggedIn ? 'inline-block' : 'none'; // NEW
-                viewAttendanceBtn.style.display = isLoggedIn ? 'inline-block' : 'none'; // NEW
+                scanQrBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
+                viewAttendanceBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
                 
                 if (!isLoggedIn) {
                     ordersCardContainer.innerHTML = '';
                     loginModal.style.display = 'flex';
                 }
-                // Call renderOrderCards whenever login status changes to refresh the list
                 renderOrderCards(searchInput.value, dateInput.value); 
             };
 
@@ -1054,18 +935,52 @@
             
             loginForm.addEventListener('submit', handleLogin);
             logoutBtn.addEventListener('click', handleLogout);
-            // ------------------------------------
             
-            // ------------------------------------
-            // NEW Attendance Logic
-            // ------------------------------------
+            let qrScannerInstance = null;
+
             scanQrBtn.addEventListener('click', () => {
                 if (!loggedInEmpId) {
                     showPopupMessage('Please log in to scan attendance.');
                     loginModal.style.display = 'flex';
                     return;
                 }
+                
                 qrScannerModal.style.display = 'flex';
+                const placeholderId = 'qr-scanner-placeholder';
+
+                // Check if the browser supports camera access
+                Html5Qrcode.getCameras().then(devices => {
+                    if (devices && devices.length) {
+                        const cameraId = devices[0].id;
+                        qrScannerInstance = new Html5Qrcode(placeholderId);
+
+                        const qrStartConfig = { fps: 10, qrbox: Math.min(250, Math.floor(window.innerWidth * 0.9)) };
+                        
+                        qrScannerInstance.start(
+                            { deviceId: { exact: cameraId } },
+                            qrStartConfig,
+                            (decodedText) => {
+                                qrScannerInstance.stop().then(() => {
+                                    qrScannerModal.style.display = 'none';
+                                    processAttendanceScan(decodedText);
+                                }).catch((stopErr) => {
+                                    console.warn('Failed to stop scanner after scan:', stopErr);
+                                    qrScannerModal.style.display = 'none';
+                                    processAttendanceScan(decodedText);
+                                });
+                            },
+                            (errorMessage) => {}
+                        ).catch(err => {
+                            console.error('Unable to start QR scanner:', err);
+                            showPopupMessage('Camera access failed. Ensure you are on a secure (HTTPS) site and have granted permissions.');
+                        });
+                    } else {
+                        showPopupMessage('No camera found on this device.');
+                    }
+                }).catch(err => {
+                    console.error("Error checking camera:", err);
+                    showPopupMessage("Error checking camera permissions.");
+                });
             });
             
             viewAttendanceBtn.addEventListener('click', () => {
@@ -1107,7 +1022,6 @@
             };
             
             const calculateTotalHours = (inTimeStr, outTimeStr) => {
-                // Takes HH:MM:SS strings and calculates the difference in HH:MM format
                 const [inH, inM, inS] = inTimeStr.split(':').map(Number);
                 const [outH, outM, outS] = outTimeStr.split(':').map(Number);
 
@@ -1115,7 +1029,7 @@
                 const outTimeInSeconds = outH * 3600 + outM * 60 + outS;
 
                 let diffSeconds = outTimeInSeconds - inTimeInSeconds;
-                if (diffSeconds < 0) diffSeconds += 24 * 3600; // Handle overnight
+                if (diffSeconds < 0) diffSeconds += 24 * 3600;
 
                 const hours = Math.floor(diffSeconds / 3600);
                 const minutes = Math.floor((diffSeconds % 3600) / 60);
@@ -1128,27 +1042,34 @@
                 showLoader();
                 
                 const empId = loggedInEmpId;
+                if (!empId) {
+                    showPopupMessage("Please log in first.");
+                    hideLoader();
+                    return;
+                }
                 const employee = employees.find(e => e.empId === empId);
                 const empName = employee ? employee.name : 'N/A';
 
-                // The scannedId format is "YYYY-MM-DD-xxxxxxxxxxx" 
-                // We only need the date part: YYYY-MM-DD
-                const datePart = scannedId.split('-').slice(0, 3).join('-'); 
-                const currentTime = new Date();
-                const timeString = currentTime.toLocaleTimeString('en-US', { hour12: false }); // HH:MM:SS
-                
-                // Construct the Firebase key
-                const attendanceKey = `${datePart}_${empId}`;
-                const attendanceRef = database.ref(`attendance/${attendanceKey}`);
-                
                 try {
-                    const snapshot = await attendanceRef.once('value');
-                    const existingRecord = snapshot.val();
+                    const snapshot = await database.ref("qr_codes/" + scannedId).once("value");
+                    if (!snapshot.exists()) {
+                        showPopupMessage("❌ Invalid QR code. QR code not found in the database.");
+                        hideLoader();
+                        return;
+                    }
+                    
+                    const qrData = snapshot.val();
+                    const datePart = qrData.date;
+                    const timeString = new Date().toLocaleTimeString('en-US', { hour12: false });
+
+                    const attendanceKey = `${datePart}_${empId}`;
+                    const attendanceRef = database.ref(`attendance/${attendanceKey}`);
+                    
+                    const existingRecord = (await attendanceRef.once('value')).val();
 
                     if (!existingRecord || !existingRecord.inTime) {
-                        // Clock IN
                         const newRecord = {
-                            attendanceId: scannedId,
+                            attendanceId: qrData.attendanceId,
                             date: datePart,
                             empId: empId,
                             empName: empName,
@@ -1161,7 +1082,6 @@
                         showPopupMessage(`Clock IN successful at ${timeString}!`);
 
                     } else if (existingRecord && !existingRecord.outTime) {
-                        // Clock OUT
                         const totalHours = calculateTotalHours(existingRecord.inTime, timeString);
                         await attendanceRef.update({
                             outTime: timeString,
@@ -1170,34 +1090,43 @@
                         showPopupMessage(`Clock OUT successful at ${timeString}. Total hours: ${totalHours}`);
 
                     } else {
-                        // Already clocked in and out
                         showPopupMessage(`You have already clocked IN and OUT for ${datePart}.`);
                     }
 
                 } catch (error) {
                     console.error("Error processing attendance:", error);
-                    showPopupMessage('Failed to process attendance. Please try again.');
+                    showPopupMessage('Failed to process attendance. Please check your Firebase rules and connection.');
                 } finally {
                     hideLoader();
                 }
             };
 
-            // Simulate the QR scan with a dummy ID
             simulateScanBtn.addEventListener('click', () => {
                 const today = new Date();
                 const yyyy = today.getFullYear();
                 const mm = String(today.getMonth() + 1).padStart(2, '0');
                 const dd = String(today.getDate()).padStart(2, '0');
                 
-                // Placeholder ID structure
-                const dummyAttendanceId = `${yyyy}-${mm}-${dd}-DEMO-SCANNER-ID`; 
-                processAttendanceScan(dummyAttendanceId);
+                const demoDate = `${yyyy}-${mm}-${dd}`;
+                const dummyAttendanceId = `${demoDate}-DEMO-SCANNER-ID`; 
+
+                // For simulation, we need to ensure this QR code exists in the database.
+                // In a real scenario, this is pre-generated by the admin.
+                const demoData = {
+                    date: demoDate,
+                    attendanceId: dummyAttendanceId,
+                    generatedBy: "Simulated System"
+                };
+
+                database.ref(`qr_codes/${dummyAttendanceId}`).set(demoData).then(() => {
+                    processAttendanceScan(dummyAttendanceId);
+                }).catch(err => {
+                    console.error("Failed to set up demo QR code data:", err);
+                    showPopupMessage("Failed to simulate scan. Check Firebase connection.");
+                });
             });
-            // ------------------------------------
 
-
-            // ... (Rest of utility functions like generateOrderId, generateInvoiceNumber)
-            const generateOrderId = async () => { /* ... existing function ... */
+            const generateOrderId = async () => {
                 const today = new Date();
                 const dd = String(today.getDate()).padStart(2, '0');
                 const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -1214,43 +1143,22 @@
                         counter = snapshot.val();
                     }
                 });
-
                 const nnn = String(counter).padStart(3, '0');
                 return `${todayKey}${nnn}`;
             };
 
-            const generateInvoiceNumber = async (dateObj) => { /* ... existing function ... */
-                const yyyy = String(dateObj.getFullYear());
-                const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-                const todayKey = `${yyyy}${mm}`; // YYYYMM
-
-                const counterRef = database.ref(`monthlyInvoiceCounters/${todayKey}`);
-                let counter = 0;
-                await counterRef.transaction((currentValue) => {
-                    return (currentValue || 0) + 1;
-                }, (error, committed, snapshot) => {
-                    if (error) {
-                        console.error("Invoice counter transaction failed: ", error);
-                    } else if (committed) {
-                        counter = snapshot.val();
-                    }
-                });
-
-                const nnnn = String(counter).padStart(4, '0');
-                return `${yyyy}${mm}${nnnn}`;
-            };
-
-            // Common Modal Logic 
             document.querySelectorAll('.modal .close-btn, #new-order-cancel-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const modal = btn.closest('.modal');
-                    if(modal.id !== 'login-modal') { 
+                    if(modal.id !== 'login-modal') {
                         modal.style.display = 'none';
+                    }
+                    if (modal && modal.id === 'qr-scanner-modal' && typeof qrScannerInstance !== 'undefined' && qrScannerInstance) {
+                        qrScannerInstance.stop().catch(() => {});
                     }
                 });
             });
 
-            // Orders Logic
             newOrderBtn.addEventListener('click', () => {
                 if (!loggedInEmpId) {
                     showPopupMessage('Please log in first using your Employee ID.');
@@ -1271,22 +1179,18 @@
                 newOrderModal.style.display = 'flex';
             });
 
-            // UPDATED: Card View Rendering Function to filter by loggedInEmpId
             const renderOrderCards = (searchText = '', filterDate = '') => { 
                 ordersCardContainer.innerHTML = ''; 
 
                 if (!loggedInEmpId) {
-                    // Show no orders if not logged in
                     ordersCardContainer.innerHTML = '<p style="text-align: center; margin-top: 50px;">Please log in to view your orders.</p>';
                     return;
                 }
 
                 const filteredOrders = orders.filter(order => {
-                    // Filter 1: Only show orders created by the logged-in employee
                     const matchesEmployee = order.empId === loggedInEmpId;
                     if (!matchesEmployee) return false;
 
-                    // Filter 2: Search text filter
                     const searchLower = searchText.toLowerCase();
                     const orderDate = new Date(order.timestamp).toISOString().split('T')[0];
                     const matchesSearch = searchText === '' ||
@@ -1296,7 +1200,6 @@
                         (order.customerName && order.customerName.toLowerCase().includes(searchLower)) ||
                         (order.tableNo && order.tableNo.toLowerCase().includes(searchLower));
 
-                    // Filter 3: Date filter
                     const matchesDate = filterDate === '' || orderDate === filterDate;
 
                     return matchesSearch && matchesDate;
@@ -1334,13 +1237,11 @@
                 });
             };
 
-            // Event listener for Order Card clicks (Delegated to container)
             ordersCardContainer.addEventListener('click', (e) => { 
                 if (e.target.classList.contains('view-order-details-btn')) {
                     const id = e.target.dataset.id;
                     const order = orders.find(o => o.orderId === id);
-                    if (order && order.empId === loggedInEmpId) { // Added check for loggedInEmpId
-                        // Populate Order Details Modal (details-order-id, etc. elements must exist)
+                    if (order && order.empId === loggedInEmpId) {
                         const orderDetailsModal = document.getElementById('order-details-modal');
                         document.getElementById('details-order-id').textContent = order.displayId || 'N/A';
                         document.getElementById('details-table-no').textContent = order.tableNo;
@@ -1365,7 +1266,6 @@
                         
                         editBtn.onclick = () => {
                             currentOrderId = order.orderId;
-                            // Deep copy items array for editing
                             currentOrder = order.items.map(item => ({...item, total: undefined}));
                             document.getElementById('emp-id').value = order.empId;
                             document.getElementById('table-no').value = order.tableNo;
@@ -1391,8 +1291,6 @@
                             showPopupMessage('Order cancelled.');
                             orderDetailsModal.style.display = 'none';
                         };
-
-
                         orderDetailsModal.style.display = 'flex';
                     } else if (order) {
                          showPopupMessage('You do not have permission to view details for this order.');
@@ -1400,9 +1298,6 @@
                 }
             });
 
-
-            // ... (Rest of helper functions)
-            
             const renderNewOrderMenuItems = () => { 
                 const newOrderMenuItems = document.getElementById('new-order-menu-items');
                 newOrderMenuItems.innerHTML = '';
@@ -1446,7 +1341,6 @@
                     currentOrderList.appendChild(listItem);
                 });
 
-                // Event listeners for quantity controls
                 newOrderModal.querySelectorAll('.increase-quantity-btn').forEach(button => {
                     button.addEventListener('click', (event) => {
                         const itemId = event.target.dataset.id;
@@ -1614,11 +1508,7 @@
                     hideLoader();
                 }
             });
-
             
-
-
-            // Firebase Data Listeners (Existing, but calling renderOrderCards)
             database.ref('products').on('value', (snapshot) => {
                 products = [];
                 snapshot.forEach(childSnapshot => {
@@ -1627,7 +1517,6 @@
                 renderNewOrderMenuItems();
             });
 
-            // UPDATED: When orders load, call renderOrderCards
             database.ref('orders').on('value', (snapshot) => {
                 orders = [];
                 snapshot.forEach(childSnapshot => {
@@ -1637,7 +1526,6 @@
                 renderOrderCards(searchInput.value, dateInput.value); 
             });
             
-            // NEW: Attendance Records Listener
             database.ref('attendance').on('value', (snapshot) => {
                 attendanceRecords = [];
                 snapshot.forEach(childSnapshot => {
@@ -1645,7 +1533,6 @@
                 });
             });
 
-            // UPDATED: After employees load, check login status (which calls renderOrderCards)
             database.ref('employees').on('value', (snapshot) => {
                 employees = [];
                 snapshot.forEach(childSnapshot => {
@@ -1654,27 +1541,9 @@
                 checkLoginStatus(); 
             });
 
-
-            // Add event listeners for filtering (Existing - now works on filtered data)
             searchInput.addEventListener('input', () => renderOrderCards(searchInput.value, dateInput.value));
             dateInput.addEventListener('change', () => renderOrderCards(searchInput.value, dateInput.value));
         });
     </script>
-
-<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const qrContainer = document.getElementById("qr-code");
-      if (qrContainer) {
-        new QRCode(qrContainer, {
-          text: window.location.href,
-          width: 70,
-          height: 70
-        });
-      }
-    });
-  </script>
-
 </body>
-
 </html>
