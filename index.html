@@ -87,6 +87,32 @@
             color: var(--primary-color);
             font-weight: 600;
         }
+        
+        /* New style for sidebar action buttons */
+        #sidebar .sidebar-action-button {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-top: 5px;
+            border: 1px solid var(--secondary-color);
+            text-align: center;
+        }
+
+        #sidebar .sidebar-action-button.btn-danger {
+            background-color: var(--danger-color);
+            color: var(--text-light);
+            border-color: var(--danger-color);
+        }
+
+        #sidebar .sidebar-action-button.btn-danger:hover {
+            background-color: #c0392b;
+            color: var(--text-light);
+        }
+
+        #sidebar .sidebar-action-button:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
 
         .container {
             flex-grow: 1;
@@ -160,9 +186,10 @@
             }
             
             .header .actions {
-                /* Push actions to the right */
+                /* Push actions to the right - NOW HIDDEN */
                 margin-left: auto; 
-                flex-direction: row; /* Keep action buttons side-by-side */
+                flex-direction: row; 
+                display: none; /* Hide actions in mobile header as they are in the drawer */
             }
         }
         /* End Header Adjustments */
@@ -836,7 +863,7 @@
             }
             
             .header .actions {
-                flex-direction: row; /* MODIFIED: keep action buttons visible and to the right */
+                flex-direction: row; 
                 gap: 5px;
                 align-items: center;
             }
@@ -881,6 +908,33 @@
                 max-width: 95%;
                 margin: 10px;
             }
+
+	.loader.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .coffee-cup {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .coffee-liquid {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 0;
+            background-color: var(--primary-color);
+            animation: fill-up 1.5s ease-in-out infinite;
+        }
+
             
             /* Ensures container content is above the fixed footer */
             .container {
@@ -891,9 +945,12 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
-    <div id="loader" class="loader">
-        <div class="spinner"></div>
+    <div class="loader" id="loader">
+        <div class="coffee-cup">
+            <div class="coffee-liquid"></div>
+        </div>
     </div>
+
 
     <div id="popup-message-container"></div>
     
@@ -903,8 +960,11 @@
             <li><a href="#" id="nav-dashboard" class="nav-link active">🏠 Dashboard</a></li>
             <li><a href="#" id="nav-today-orders" class="nav-link">☕ Today's Orders</a></li>
             <li><a href="#" id="nav-orders-log" class="nav-link">📜 All Orders</a></li>
-            <li><button id="nav-viewAttendanceBtn" class="btn-transparent">📊 My Attendance</button></li>
-        </ul>
+            <li><button id="nav-viewAttendanceBtn" class="nav-link">📊 My Attendance</button></li>
+            <li><button id="newOrderBtn" class="btn sidebar-action-button" style="margin-top: 20px;">➕ Start New Order</button></li>
+            <li><button id="scanQrBtn" class="btn sidebar-action-button" style="display: none;">📷 Clock IN/OUT (Scan QR)</button></li>
+            <li><button id="logoutBtn" class="btn sidebar-action-button btn-danger" style="display: none;">🚪 Logout</button></li>
+            </ul>
     </nav>
     
     <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
@@ -914,10 +974,7 @@
             <button id="mobile-nav-toggle" class="mobile-nav-toggle">☰</button>
             <h1 id="main-header-title">Mapple's Cafe</h1>
             <div class="actions">
-                <button id="scanQrBtn" class="btn btn-primary" style="display: none;">📷</button>
-                <button id="newOrderBtn" class="btn btn-primary">➕</button>
-                <button id="logoutBtn" class="btn btn-danger" style="display: none;">🚪</button>
-            </div>
+                </div>
         </div>
         
         <div id="dashboard-view" class="dashboard-content active">
@@ -1109,8 +1166,7 @@
                                 <th>Emp Name</th>
                                 <th>IN Time</th>
                                 <th>OUT Time</th>
-                                <th>Total Hours</th>
-                            </tr>
+                                <th>Total Duration (HH:MM:SS)</th> </tr>
                         </thead>
                         <tbody id="attendance-history-body"></tbody>
                     </table>
@@ -1122,7 +1178,7 @@
     <footer id="attribution-footer">
         <p>
             Designed by 
-            <a href="https://www.google.com/search?q=MJ+SMART+APPS" target="_blank" rel="noopener noreferrer">MJ SMART APPS</a>
+            <a href="https://www.mjsmartapps.xyz" target="_blank" rel="noopener noreferrer">MJ SMART APPS</a>
         </p>
     </footer>
 
@@ -1136,6 +1192,7 @@
             const loginEmpIdInput = document.getElementById('login-emp-id');
             const loginDobInput = document.getElementById('login-dob'); 
 
+            // REMAPPED to sidebar
             const newOrderBtn = document.getElementById('newOrderBtn');
             const logoutBtn = document.getElementById('logoutBtn');
             const scanQrBtn = document.getElementById('scanQrBtn');
@@ -1306,10 +1363,14 @@
             };
 
             const updateUIForLoginStatus = (isLoggedIn) => {
-                newOrderBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
-                logoutBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
-                scanQrBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
+                // Moved visibility control to sidebar buttons
+                newOrderBtn.style.display = isLoggedIn ? 'block' : 'none'; // Block for sidebar buttons
+                logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
+                scanQrBtn.style.display = isLoggedIn ? 'block' : 'none';
                 
+                // Hide view attendance button if logged out
+                viewAttendanceBtn.style.display = isLoggedIn ? 'block' : 'none';
+
                 if (!isLoggedIn) {
                     ordersCardContainer.innerHTML = '';
                     todayOrdersCardContainer.innerHTML = '';
@@ -1386,6 +1447,12 @@
                     loginModal.style.display = 'flex';
                     return;
                 }
+                
+                // Close drawer before opening modal
+                if (sidebar.classList.contains('open')) {
+                    toggleDrawer(); 
+                }
+                
                 qrScannerModal.style.display = 'flex';
 
                 const placeholderId = 'qr-scanner-placeholder';
@@ -1435,24 +1502,25 @@
             });
             
             /**
-             * Calculates the difference between two ISO 8601 strings and returns it in HH:MM format.
+             * Calculates the difference between two ISO 8601 strings and returns it in HH:MM:SS format.
              * @param {string} inTimeISO - The ISO string for clock IN.
              * @param {string} outTimeISO - The ISO string for clock OUT.
-             * @returns {string} Total time in HH:MM format.
+             * @returns {string} Total duration in HH:MM:SS format.
              */
-            const calculateTotalHoursISO = (inTimeISO, outTimeISO) => {
+            const calculateTotalDurationISO = (inTimeISO, outTimeISO) => {
                 const inTimeMs = new Date(inTimeISO).getTime();
                 const outTimeMs = new Date(outTimeISO).getTime();
                 
                 // Difference in milliseconds
                 let diffMs = outTimeMs - inTimeMs;
                 
-                // Convert to hours and minutes
+                // Convert to hours, minutes, and seconds
                 const diffSeconds = Math.floor(diffMs / 1000);
                 const hours = Math.floor(diffSeconds / 3600);
                 const minutes = Math.floor((diffSeconds % 3600) / 60);
+                const seconds = diffSeconds % 60;
 
-                return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             };
             
             // --- UPDATED renderAttendanceHistory FUNCTION ---
@@ -1470,8 +1538,8 @@
                 }
 
                 employeeAttendance.forEach(rec => {
-                    // Total hours is stored directly on the record now
-                    const totalHours = rec.totalHours || 'N/A';
+                    // Total duration is stored directly on the record
+                    const totalDuration = rec.totalDuration || 'N/A';
                     
                     // Convert ISO strings back to local time strings for display
                     const inTimeDate = rec.inTime ? new Date(rec.inTime) : null;
@@ -1489,12 +1557,12 @@
                         <td>${rec.employeeName}</td>
                         <td>${inTimeDisplay}</td>
                         <td>${outTimeDisplay}</td>
-                        <td>${totalHours}</td>
+                        <td>${totalDuration}</td>
                     `;
                 });
             };
 
-            // --- UPDATED processAttendanceScan FUNCTION ---
+            // --- UPDATED processAttendanceScan FUNCTION (Uses calculateTotalDurationISO) ---
             const processAttendanceScan = async (scannedId) => {
                 qrScannerModal.style.display = 'none';
                 showLoader();
@@ -1539,14 +1607,14 @@
 
                     if (lastRecord) {
                         // 2. Clock OUT: Update the last open record
-                        const totalHours = calculateTotalHoursISO(lastRecord.inTime, inTime);
+                        const totalDuration = calculateTotalDurationISO(lastRecord.inTime, inTime);
 
                         await attendanceRef.child(lastRecord.key).update({
                             outTime: inTime, // Use ISO format for outTime
-                            totalHours: totalHours
+                            totalDuration: totalDuration // UPDATED FIELD NAME
                         });
 
-                        showPopupMessage(`Clock OUT successful at ${timeString}. Total hours: ${totalHours}`);
+                        showPopupMessage(`Clock OUT successful at ${timeString}. Total Duration: ${totalDuration}`);
 
                     } else {
                         // 3. Clock IN: Create a new record
@@ -1561,7 +1629,7 @@
                             employeeEmpId: empId, 
                             inTime: inTime, // Full ISO timestamp
                             outTime: null,
-                            totalHours: null,
+                            totalDuration: null, // UPDATED FIELD NAME
                             generatedBy: 'System'
                         });
 
