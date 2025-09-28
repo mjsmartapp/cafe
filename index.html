@@ -1229,6 +1229,7 @@
             let attendanceRecords = [];
             let currentOrder = [];
             let currentOrderId = null;
+            let validQrCodes = []; // NEW: Variable to hold valid attendance IDs from the qr_codes path
 
             const showPopupMessage = (message) => {
                 popupMessageContainer.textContent = message;
@@ -1534,10 +1535,18 @@
                 });
             };
 
-            // --- UPDATED processAttendanceScan FUNCTION (Uses calculateTotalDurationISO) ---
+            // --- UPDATED processAttendanceScan FUNCTION (Uses calculateTotalDurationISO and VALIDATION) ---
             const processAttendanceScan = async (scannedId) => {
                 qrScannerModal.style.display = 'none';
                 showLoader();
+                
+                // ⭐ VALIDATION CHECK: Is the scanned ID in the list of valid attendance IDs? ⭐
+                if (!validQrCodes.includes(scannedId)) {
+                    hideLoader();
+                    showPopupMessage('Invalid QR code. Please scan the official attendance QR.');
+                    return; // Stop processing if the QR code is invalid
+                }
+                // ⭐ END VALIDATION CHECK ⭐
                 
                 const empId = loggedInEmpId;
                 const employee = employees.find(e => e.empId === empId);
@@ -2039,6 +2048,20 @@
                 }
             });
             
+            // NEW LISTENER: Fetch valid QR codes from qr_codes path
+            database.ref('qr_codes').on('value', (snapshot) => {
+                validQrCodes = [];
+                snapshot.forEach(childSnapshot => {
+                    const record = childSnapshot.val();
+                    // Explicitly read the 'attendanceId' property for validation
+                    if (record && record.attendanceId) {
+                        validQrCodes.push(record.attendanceId); 
+                    }
+                });
+                console.log("Fetched valid QR Codes:", validQrCodes);
+            });
+            // END NEW LISTENER
+
             database.ref('attendance').on('value', (snapshot) => {
                 attendanceRecords = [];
                 snapshot.forEach(childSnapshot => {
