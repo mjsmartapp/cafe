@@ -34,11 +34,11 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-dark);
-            display: flex; /* Changed to flex for sidebar */
+            display: flex; 
             min-height: 100vh;
         }
 
-        #sidebar { /* New Sidebar Style */
+        #sidebar { 
             width: var(--sidebar-width);
             background-color: var(--primary-color);
             color: var(--text-light);
@@ -92,7 +92,7 @@
             flex-grow: 1;
             padding: 20px;
             transition: margin-left 0.3s;
-            padding-bottom: 50px; /* ADDED: Space for fixed attribution footer */
+            padding-bottom: 50px; 
         }
 
         .header {
@@ -102,20 +102,67 @@
             padding: 10px 0;
             margin-bottom: 20px;
             border-bottom: 2px solid var(--secondary-color);
-            background-color: var(--card-bg); /* ADDED: White background for professional look */
+            background-color: var(--card-bg); 
             padding: 15px 20px;
-            margin: -20px -20px 20px -20px; /* Fill parent width */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
-            position: sticky; /* Sticky header for better UX */
+            margin: -20px -20px 20px -20px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+            position: sticky; 
             top: 0;
             z-index: 50;
         }
         
+        /* ADDED: Mobile Nav Toggle Button Styling (Hidden by default) */
+        .mobile-nav-toggle {
+            display: none; 
+            padding: 8px 12px;
+            margin-right: 15px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.5em;
+            cursor: pointer;
+            z-index: 1001; 
+            line-height: 1;
+        }
+        
+        /* ADDED: Sidebar Backdrop for Drawer View */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+        .sidebar-backdrop.visible {
+            display: block;
+        }
+        /* End ADDED Drawer Styling */
+
+
         /* Adjusted padding for mobile header */
         @media (max-width: 768px) {
             .header {
                  margin: -20px -20px 20px -20px;
                  padding: 15px 15px;
+            }
+            
+            /* MODIFIED: Header to show toggle button on the left */
+            .header {
+                justify-content: flex-start;
+            }
+            
+            .header h1 {
+                flex-grow: 1;
+            }
+            
+            .header .actions {
+                /* Push actions to the right */
+                margin-left: auto; 
+                flex-direction: row; /* Keep action buttons side-by-side */
             }
         }
         /* End Header Adjustments */
@@ -672,21 +719,51 @@
         @media (max-width: 768px) {
              body {
                 flex-direction: column;
+                position: relative; 
+                overflow-x: hidden; /* Prevent horizontal scroll when drawer is off-screen */
             }
             
+            .mobile-nav-toggle {
+                display: block; /* Show the toggle button */
+            }
+
             #sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                max-height: 60px;
-                overflow: hidden;
+                width: var(--sidebar-width); 
+                height: 100vh;
+                position: fixed; /* Fixed position for drawer */
+                top: 0;
+                left: 0;
+                transform: translateX(-100%); /* Start off-screen */
+                transition: transform 0.3s ease-in-out;
+                z-index: 1000;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+                overflow-y: auto;
+            }
+
+            #sidebar.open {
+                transform: translateX(0); /* Slide in */
             }
             
-            #sidebar h2 { display: none; }
-            #sidebar ul { display: flex; justify-content: space-around; }
-            #sidebar ul li { margin: 0; }
-            #sidebar ul li a, #sidebar ul li button { padding: 10px 5px; font-size: 0.8em; text-align: center; }
-            .graph-area { grid-template-columns: 1fr; }
+            #sidebar h2 { display: block; margin-top: 20px; } /* Show title again */
+            #sidebar ul { 
+                display: block; /* Vertical list */
+                justify-content: initial; 
+            }
+            
+            #sidebar ul li { 
+                margin-bottom: 5px; /* Restore vertical spacing */
+            }
+            
+            #sidebar ul li a, #sidebar ul li button { 
+                padding: 10px 15px; 
+                font-size: 1em; 
+                text-align: left; 
+            }
+            
+            .container {
+                /* Add padding on the left to accommodate the toggle button area */
+                padding-left: 20px; 
+            }
             
             /* MODIFIED: New Order Modal Mobile Fix */
             #new-order-modal .modal-content {
@@ -759,13 +836,14 @@
             }
             
             .header .actions {
-                flex-direction: column;
+                flex-direction: row; /* MODIFIED: keep action buttons visible and to the right */
                 gap: 5px;
-                align-items: flex-end;
+                align-items: center;
             }
             
             .header h1 {
                 font-size: 20px;
+                margin-left: 15px; /* Add space between toggle and title */
             }
 
             .new-order-grid {
@@ -828,15 +906,22 @@
             <li><button id="nav-viewAttendanceBtn" class="btn-transparent">📊 My Attendance</button></li>
         </ul>
     </nav>
+    
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    
     <div class="container">
         <div class="header">
-            <h1 id="main-header-title">Employee POS Dashboard</h1>
+            <button id="mobile-nav-toggle" class="mobile-nav-toggle">☰</button>
+            <h1 id="main-header-title">Mapple's Cafe</h1>
             <div class="actions">
-                </div>
+                <button id="scanQrBtn" class="btn btn-primary" style="display: none;">📷</button>
+                <button id="newOrderBtn" class="btn btn-primary">➕</button>
+                <button id="logoutBtn" class="btn btn-danger" style="display: none;">🚪</button>
+            </div>
         </div>
         
         <div id="dashboard-view" class="dashboard-content active">
-            <h2>Welcome, <span id="employee-name-display">Employee</span>!</h2>
+            <h2>Welcome to Mapple's Cafe, <span id="employee-name-display">Employee</span>!</h2>
             
             <div class="summary-cards">
                 <div class="summary-card">
@@ -858,9 +943,6 @@
                 </div>
                 <div class="summary-card dashboard-link-card" id="card-all-orders">
                     <h4>Check All Orders</h4>
-                </div>
-                <div class="summary-card dashboard-link-card" id="card-logout">
-                    <h4>Logout 🚪</h4>
                 </div>
             </div>
             
@@ -1054,10 +1136,9 @@
             const loginEmpIdInput = document.getElementById('login-emp-id');
             const loginDobInput = document.getElementById('login-dob'); 
 
-            // Re-map the buttons from the header to their new Quick Action card locations
-            const newOrderBtn = document.getElementById('card-new-order');
-            const logoutBtn = document.getElementById('card-logout');
-            const scanQrBtn = document.getElementById('card-scan-qr');
+            const newOrderBtn = document.getElementById('newOrderBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const scanQrBtn = document.getElementById('scanQrBtn');
             
             // Re-map View Attendance button from header to sidebar
             const viewAttendanceBtn = document.getElementById('nav-viewAttendanceBtn');
@@ -1084,6 +1165,12 @@
             const navLinks = document.querySelectorAll('.nav-link');
             const mainHeaderTitle = document.getElementById('main-header-title');
             const employeeNameDisplay = document.getElementById('employee-name-display'); // NEW
+            
+            // --- ADDED: Mobile Drawer Elements ---
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+            // -------------------------------------
 
             let currentOrderToComplete = null;
             let totalOrderAmount = 0;
@@ -1122,6 +1209,25 @@
                 }, 3000);
             };
             
+            // --- ADDED: Drawer Toggle Function ---
+            const toggleDrawer = () => {
+                const isMobile = window.matchMedia("(max-width: 768px)").matches;
+                if (!isMobile) return; 
+
+                sidebar.classList.toggle('open');
+                sidebarBackdrop.classList.toggle('visible');
+                // Lock body scroll when drawer is open
+                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : 'auto';
+            };
+            
+            // --- ADDED: Drawer Event Listeners ---
+            mobileNavToggle.addEventListener('click', toggleDrawer);
+
+            if (sidebarBackdrop) {
+                sidebarBackdrop.addEventListener('click', toggleDrawer);
+            }
+            // -------------------------------------
+
             // NEW: Function to switch views
             const switchView = (viewId, title) => {
                 // Deactivate all views and links
@@ -1134,6 +1240,11 @@
                     mainHeaderTitle.textContent = title;
                     const navLink = document.getElementById(`nav-${viewId}`);
                     if (navLink) navLink.classList.add('active');
+                }
+                
+                // Close drawer if open (mobile only)
+                if (sidebar.classList.contains('open')) {
+                    toggleDrawer(); 
                 }
                 
                 // Specific logic for views
@@ -1149,10 +1260,11 @@
                 }
             };
 
-            // NEW: Event listeners for sidebar navigation
+            // NEW: Event listeners for sidebar navigation (Modified to use switchView which handles closing the drawer)
             document.getElementById('nav-dashboard').addEventListener('click', (e) => {
                 e.preventDefault();
-                switchView('dashboard', 'Employee POS Dashboard');
+                // RENAMED Dashboard title here
+                switchView('dashboard', 'Mapple\'s Cafe');
             });
             document.getElementById('nav-today-orders').addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1168,7 +1280,6 @@
             document.getElementById('card-scan-qr').addEventListener('click', () => scanQrBtn.click());
             document.getElementById('card-all-orders').addEventListener('click', () => switchView('orders-log', 'All My Orders Log'));
             document.getElementById('card-attendance-link').addEventListener('click', () => viewAttendanceBtn.click());
-            document.getElementById('card-logout').addEventListener('click', () => logoutBtn.click()); // Action for new Logout card
 
             // NEW: Render Dashboard Summary (Employee-Only)
             const renderDashboardSummary = () => {
@@ -1195,8 +1306,9 @@
             };
 
             const updateUIForLoginStatus = (isLoggedIn) => {
-                // Individual button display logic removed as they are now in the dashboard-view
-                // which is controlled by the switchView function.
+                newOrderBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
+                logoutBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
+                scanQrBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
                 
                 if (!isLoggedIn) {
                     ordersCardContainer.innerHTML = '';
@@ -1207,7 +1319,8 @@
                 
                 // Show default view upon login status change
                 if (isLoggedIn) {
-                    switchView('dashboard', 'Employee POS Dashboard');
+                    // RENAMED Dashboard title here
+                    switchView('dashboard', 'Mapple\'s Cafe');
                 }
             };
 
@@ -1258,19 +1371,12 @@
                 loggedInEmpId = null;
                 loggedInEmpName = null;
                 showPopupMessage('You have been logged out.');
-                
-                // Explicitly close any open modals for a clean UI reset upon logout
-                document.getElementById('new-order-modal').style.display = 'none';
-                document.getElementById('qr-scanner-modal').style.display = 'none';
-                document.getElementById('attendance-history-modal').style.display = 'none';
-
                 updateUIForLoginStatus(false);
                 loginForm.reset(); 
             };
             
             loginForm.addEventListener('submit', handleLogin);
-            // The listener now works on the 'card-logout' div due to variable re-mapping
-            logoutBtn.addEventListener('click', handleLogout); 
+            logoutBtn.addEventListener('click', handleLogout);
             
             let qrScannerInstance = null;
 
@@ -1319,6 +1425,10 @@
                 if (!loggedInEmpId) {
                     showPopupMessage('Please log in to view attendance.');
                     return;
+                }
+                // Close drawer before showing modal if on mobile
+                if (sidebar.classList.contains('open')) {
+                    toggleDrawer(); 
                 }
                 renderAttendanceHistory();
                 attendanceHistoryModal.style.display = 'flex';
@@ -1504,6 +1614,11 @@
                     showPopupMessage('Please log in first using your Employee ID.');
                     loginModal.style.display = 'flex';
                     return;
+                }
+                
+                // Close drawer before opening modal
+                if (sidebar.classList.contains('open')) {
+                    toggleDrawer(); 
                 }
                 
                 empIdInput.value = loggedInEmpId;
